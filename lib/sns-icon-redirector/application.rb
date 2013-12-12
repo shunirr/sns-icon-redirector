@@ -16,8 +16,8 @@ module SnsIconRedirector
         case user
         when /^[a-zA-Z0-9_]+$/
           url = @twitter_icon.get params[:user]
-        when /\((\d+)\)$/
-          url = @twitter_icon.get $1
+        when /\(fb:(\d+)\)$/
+          url = @facebook_icon.get $1
         end
         @icons[params[:user]] = url if url
       end
