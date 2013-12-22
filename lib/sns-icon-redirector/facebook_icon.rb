@@ -4,7 +4,7 @@ require 'json'
 require 'open-uri'
 
 module SnsIconRedirector
-  class FacebookIcon
+  class FacebookIcon < Icon
     def get(user_id)
       begin
         facebook_user = JSON.parse(open("https://graph.facebook.com/#{user_id}?fields=picture").read)

@@ -4,7 +4,7 @@ require 'pit'
 require 'twitter'
 
 module SnsIconRedirector
-  class TwitterIcon
+  class TwitterIcon < Icon
     def initialize
       pit = Pit.get("twitter", :require => {
         'consumer_key'        => "YOUR_CONSUMER_KEY",
