@@ -6,4 +6,5 @@ module SnsIconRedirector
   autoload :Application,  'sns-icon-redirector/application'
   autoload :FacebookIcon, 'sns-icon-redirector/facebook_icon'
   autoload :TwitterIcon,  'sns-icon-redirector/twitter_icon'
+  autoload :Icon,         'sns-icon-redirector/icon'
 end
