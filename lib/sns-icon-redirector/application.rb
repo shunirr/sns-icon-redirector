@@ -31,7 +31,7 @@ module SnsIconRedirector
       user = params[:user]
       icon = @icons[user] || get_icon(user)
       if icon
-        if icon[:expire_at] > Time.now
+        if icon[:expire_at] < Time.now
           if HTTP.head(icon[:url]).status.to_s =~ /^40\d$/
             icon = get_icon user
           end
