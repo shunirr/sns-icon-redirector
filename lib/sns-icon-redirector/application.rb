@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 require 'http'
+require 'tmp_cache'
 
 module SnsIconRedirector
   class Application < Sinatra::Base
@@ -12,32 +13,25 @@ module SnsIconRedirector
     end
 
     def get_icon(user)
-      icon = {}
-      icon[:expire_at] = Time.now + 24 * 60 * 60
+      icon = nil
       case user
       when /^[a-zA-Z0-9_]+$/
-        icon[:url] = @twitter_icon.get params[:user]
+        icon = @twitter_icon.get user
       when /\(fb:(\d+)\)$/
-        icon[:url] = @facebook_icon.get $1
+        icon = @facebook_icon.get $1
       end
-      if icon[:url]
-        icon
-      else
-        nil
-      end
+      icon
     end
 
     get '/:user' do
       user = params[:user]
-      icon = @icons[user] || get_icon(user)
+      icon = TmpCache.get user
+      unless icon
+        icon = get_icon user
+        TmpCache.set user, icon, 60 * 60 * (rand(12) + 1)
+      end
       if icon
-        if icon[:expire_at] < Time.now
-          if HTTP.head(icon[:url]).status.to_s =~ /^40\d$/
-            icon = get_icon user
-          end
-        end
-        @icons[user] = icon
-        redirect icon[:url]
+        redirect icon
       else
         status 404
         ''
