@@ -28,7 +28,7 @@ module SnsIconRedirector
       icon = TmpCache.get user
       unless icon
         icon = get_icon user
-        TmpCache.set user, icon, 60 * 60 * (rand(12) + 1)
+        TmpCache.set user, icon, 60 * 60 * (rand(12) + 12)
       end
       if icon
         redirect icon
